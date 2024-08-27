@@ -16,6 +16,7 @@ export const addAdvance = async (req, res, next) => {
   }
 };
 
+
 export const viewAdSalary = async (req, res, next) => {
   try {
     const advanceSalary = await AdvanceSalary.find({})
@@ -31,6 +32,7 @@ export const viewAdSalary = async (req, res, next) => {
     res.status(500).json({ error: "Internal Server Error", status: false });
   }
 };
+
 
 export const viewByIdSalary = async (req, res, next) => {
   try {

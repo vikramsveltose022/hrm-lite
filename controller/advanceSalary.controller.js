@@ -16,9 +16,12 @@ export const addAdvance = async (req, res, next) => {
   }
 };
 
+
 export const viewAdSalary = async (req, res, next) => {
   try {
-    const advanceSalary = await AdvanceSalary.find({}).sort({ sortorder: -1 });
+    const advanceSalary = await AdvanceSalary.find({})
+      .sort({ sortorder: -1 })
+      .populate({ path: "fullname", model: "employee" });
     return advanceSalary.length > 0
       ? res
           .status(200)
@@ -30,9 +33,13 @@ export const viewAdSalary = async (req, res, next) => {
   }
 };
 
+
 export const viewByIdSalary = async (req, res, next) => {
   try {
-    const advanceSalary = await AdvanceSalary.findById(req.params.id);
+    const advanceSalary = await AdvanceSalary.findById(req.params.id).populate({
+      path: "fullname",
+      model: "employee",
+    });
     return advanceSalary
       ? res
           .status(200)

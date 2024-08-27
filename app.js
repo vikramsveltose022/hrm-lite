@@ -15,6 +15,7 @@ import HolidayRouter from "./routes/holiday.route.js";
 import SalaryRouter from "./routes/salary.route.js";
 import ReceiptRouter from "./routes/receipt.route.js";
 import AdvcanceSalaryRouter from "./routes/advanceSalary.route.js";
+import GrantloanRouter from "./routes/grantLoan.route.js";
 dotenv.config();
 const app = express();
 app.use(cors());
@@ -36,6 +37,7 @@ app.use("/holiday", HolidayRouter);
 app.use("/salary", SalaryRouter);
 app.use("/receipt", ReceiptRouter);
 app.use("/ad-salary", AdvcanceSalaryRouter);
+app.use("/grantloan", GrantloanRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

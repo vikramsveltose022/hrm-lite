@@ -10,6 +10,9 @@ const epfoSchema = new mongoose.Schema(
     pensionSchemes: {
       type: Number,
     },
+    siPer:{
+      type:Number
+    }
   },
   { timestamps: true }
 );

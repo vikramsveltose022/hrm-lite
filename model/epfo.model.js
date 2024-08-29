@@ -10,10 +10,10 @@ const epfoSchema = new mongoose.Schema(
     pensionSchemes: {
       type: Number,
     },
-    siPer:{
-      type:Number
-    }
+    siPer: {
+      type: Number,
+    },
   },
   { timestamps: true }
 );
-export const Epfo = mongoose.model("/epfo", epfoSchema);
+export const Epfo = mongoose.model("epfo", epfoSchema);

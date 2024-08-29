@@ -17,6 +17,8 @@ import ReceiptRouter from "./routes/receipt.route.js";
 import AdvcanceSalaryRouter from "./routes/advanceSalary.route.js";
 import GrantloanRouter from "./routes/grantLoan.route.js";
 import EpfoRouter from "./routes/epfo.route.js";
+import NewSalaryRouter from "./routes/newSalary.router.js";
+import FinalSalaryRouter from "./routes/finalSalary.route.js";
 dotenv.config();
 const app = express();
 app.use(cors());
@@ -40,6 +42,8 @@ app.use("/receipt", ReceiptRouter);
 app.use("/ad-salary", AdvcanceSalaryRouter);
 app.use("/grantloan", GrantloanRouter);
 app.use("/epfo", EpfoRouter);
+app.use("/newSalary", NewSalaryRouter);
+app.use("/final-salary", FinalSalaryRouter);
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });

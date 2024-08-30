@@ -5,6 +5,7 @@ export const addLoan = async (req, res, next) => {
     const si =
       (req.body.loan_amount * req.body.period * req.body.interest_rate) / 1200;
     req.body.emi = ((req.body.loan_amount + si) / req.body.period).toFixed(2);
+    req.body.duration = req.body.period;
     const loan = await Grantloan.create(req.body);
     return loan
       ? res.status(200).json({ message: "Data Added", loan, status: true })

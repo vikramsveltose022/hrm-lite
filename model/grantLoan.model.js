@@ -16,6 +16,9 @@ const grantloanschema = new mongoose.Schema(
     emi: {
       type: Number,
     },
+    duration: {
+      type: Number,
+    },
   },
   { timestamps: true }
 );

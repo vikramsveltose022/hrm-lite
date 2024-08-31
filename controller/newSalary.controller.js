@@ -77,8 +77,7 @@ export const ViewNewSalary = async (req, res, next) => {
   try {
     const salary = await newSalary
       .find({ userId: req.params.userId })
-      .sort({ sortorder: -1 })
-      .populate({ path: "employeeId", model: "employee" });
+      .sort({ sortorder: -1 });
     return salary.length > 0
       ? res.status(200).json({ Salary: salary, status: true })
       : res.status(500).json(404).json({ message: "Not Found", status: false });

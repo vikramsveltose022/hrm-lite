@@ -5,6 +5,6 @@ import {
 } from "../controller/finalSalary.controller.js";
 const router = express.Router();
 
-router.get("/add-salary/:employeeId", finalAmount);
-router.get("/view-salary/:employeeId", viewAmount);
+router.get("/add-salary", finalAmount);
+router.get("/view-salary/:employeeId/:month", viewAmount);
 export default router;

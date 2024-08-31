@@ -20,8 +20,9 @@ import GrantloanRouter from "./routes/grantLoan.route.js";
 import EpfoRouter from "./routes/epfo.route.js";
 import NewSalaryRouter from "./routes/newSalary.router.js";
 import FinalSalaryRouter from "./routes/finalSalary.route.js";
-import { createNewSalary } from "./controller/newSalary.controller.js";
 
+import { createNewSalary } from "./controller/newSalary.controller.js";
+import { finalAmount } from "./controller/finalSalary.controller.js";
 dotenv.config();
 const app = express();
 app.use(cors());
@@ -51,8 +52,9 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-cron.schedule("0 7 1 * *", () => {
+cron.schedule("0 1 1 * *", () => {
   createNewSalary();
+  finalAmount();
 });
 
 app.listen(process.env.PORT, () => {

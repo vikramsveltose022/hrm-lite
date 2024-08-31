@@ -2,6 +2,7 @@ import { Epfo } from "../model/epfo.model.js";
 
 export const addEpfo = async (req, res, next) => {
   try {
+    req.body.siPer = 0.75;
     const epfo = await Epfo.create(req.body);
     return epfo
       ? res.status(200).json({ message: "Data Added", epfo, status: true })

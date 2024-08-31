@@ -28,6 +28,9 @@ const finalSalarySchema = new mongoose.Schema(
     holidayAmount: {
       type: Number,
     },
+    month: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

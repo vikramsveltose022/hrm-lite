@@ -5,27 +5,27 @@ import axios from "axios";
 export const createNewSalary = async (req, res, next) => {
   try {
     let latest = [];
-    let employee = [];
+    // let employee = [];
     let totalhours = 0;
-    let totalWorkingDays = 0;
+    // let totalWorkingDays = 0;
     const current = new Date();
     const month = current.getMonth();
     const year = current.getFullYear();
     const lastDayOfPreviousMonth = new Date(year, month, 0).getDate();
-    const user = await Employee.find({
+    const users = await Employee.find({
       userId: req.params.userId,
       status: "Active",
     });
-    if (user.length === 0) {
+    if (users.length === 0) {
       return res.status(404).json({ message: "User Not Found", status: false });
     }
-    for (let id of user) {
-      // console.log("user", id);
-      const data = await totalWorkingHours(id._id);
-      const totalshiftWorkingHours = id.Shift.totalHours;
+    for (let user of users) {
+      // console.log("users", user);
+      const data = await totalWorkingHours(user._id);
+      const totalshiftWorkingHours = user.Shift.totalHours;
       totalWorkingDays = await data.totalDays;
       totalhours = data.totalHours.toString();
-      const CheckSalary = id.Salary;
+      const CheckSalary = user.Salary;
       // console.log("basicsalary", CheckSalary);
       const onedaySalary = (CheckSalary / lastDayOfPreviousMonth).toFixed(2);
       // console.log("onedaySalary", onedaySalary);
@@ -43,11 +43,11 @@ export const createNewSalary = async (req, res, next) => {
       // console.log("monthssalary", userSalary);
       // console.log(oneHoursSalary);
       let latestSalary = {
-        userId: id.userId,
-        employeeId: id._id,
-        employeeName: id.Name,
-        AadharNo: id.AadharNo,
-        basicSalary: id.Salary,
+        userId: user.userId,
+        employeeId: user._id,
+        employeeName: user.Name,
+        AadharNo: user.AadharNo,
+        basicSalary: user.Salary,
         salaryMonth: `${month.toString().padStart(2, "0")}-${year}`,
         currentSalary: userSalary,
         totalHours: parseFloat(totalhours),
@@ -89,5 +89,3 @@ export const ViewNewSalary = async (req, res, next) => {
       .json({ error: "Internal Server Error", status: false });
   }
 };
-
-

@@ -23,6 +23,10 @@ const newSalarySchema = new mongoose.Schema(
     totalHours: {
       type: Number,
     },
+    status: {
+      type: String,
+      default: "Unpaid",
+    },
   },
   { timestamps: true }
 );

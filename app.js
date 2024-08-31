@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import path from "path";
 import cors from "cors";
 import { fileURLToPath } from "url";
+import cron from "node-cron";
 import { dbConfig } from "./db/dbConfig.js";
 import EmployeeRouter from "./routes/employee.route.js";
 import UserRouter from "./routes/user.route.js";
@@ -19,6 +20,8 @@ import GrantloanRouter from "./routes/grantLoan.route.js";
 import EpfoRouter from "./routes/epfo.route.js";
 import NewSalaryRouter from "./routes/newSalary.router.js";
 import FinalSalaryRouter from "./routes/finalSalary.route.js";
+import { createNewSalary } from "./controller/newSalary.controller.js";
+
 dotenv.config();
 const app = express();
 app.use(cors());
@@ -46,6 +49,10 @@ app.use("/newSalary", NewSalaryRouter);
 app.use("/final-salary", FinalSalaryRouter);
 app.get("/", (req, res) => {
   res.send("Hello World!");
+});
+
+cron.schedule("0 7 1 * *", () => {
+  createNewSalary();
 });
 
 app.listen(process.env.PORT, () => {

@@ -16,8 +16,10 @@ export const finalAmount = async (req, res, next) => {
     const firstDayOfPreviousMonth = new Date(currentYear, currentMonth - 1, 1);
     const lastDayOfPreviousMonth = new Date(currentYear, currentMonth, 1);
     const lastDayOfmonths = new Date(currentYear, currentMonth, 0).getDate();
-
-    const users = await newSalary.find({});
+    let salaryMonth = `${currentMonth
+      .toString()
+      .padStart(2, "0")}-${currentYear}`;
+    const users = await newSalary.find({ salaryMonth: salaryMonth });
     for (let user of users) {
       let finalAmount = 0;
       let advanceAmount = 0;
@@ -71,10 +73,9 @@ export const finalAmount = async (req, res, next) => {
         ).toFixed(2)
       );
       const holidays = await Holiday.find({
-        createdAt: {
-          $gte: firstDayOfPreviousMonth,
-          $lte: lastDayOfPreviousMonth,
-        },
+        userId: user.userId,
+        Year: currentYear,
+        Month: currentMonth,
       });
       const holidaysAmount = parseFloat(
         (holidays.length * oneDaySalary).toFixed(2)
@@ -96,10 +97,10 @@ export const finalAmount = async (req, res, next) => {
         holidayAmount: holidaysAmount,
         month: currentMonth,
       };
-      await FinalSalary.create(latestSalary);
+      // await FinalSalary.create(latestSalary);
       list.push(latestSalary);
     }
-    // res.status(200).json(list);
+    res.status(200).json(list);
   } catch (error) {
     console.log(error);
     res.status(200).json({ error: "Internal Server Error", status: false });

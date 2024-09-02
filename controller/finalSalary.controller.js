@@ -7,7 +7,7 @@ import { newSalary } from "../model/newSalary.model.js";
 
 export const finalAmount = async (req, res, next) => {
   try {
-    let list = [];
+    // let list = [];
     let pf;
     let esic;
     const currentDate = new Date();
@@ -97,10 +97,10 @@ export const finalAmount = async (req, res, next) => {
         holidayAmount: holidaysAmount,
         month: currentMonth,
       };
-      // await FinalSalary.create(latestSalary);
-      list.push(latestSalary);
+      await FinalSalary.create(latestSalary);
+      // list.push(latestSalary);
     }
-    res.status(200).json(list);
+    // res.status(200).json(list);
   } catch (error) {
     console.log(error);
     res.status(200).json({ error: "Internal Server Error", status: false });

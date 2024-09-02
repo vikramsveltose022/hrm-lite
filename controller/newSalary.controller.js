@@ -4,7 +4,7 @@ import axios from "axios";
 
 export const createNewSalary = async (req, res, next) => {
   try {
-    let latest = [];
+    // let latest = [];
     // let employee = [];
     const current = new Date();
     const month = current.getMonth();
@@ -53,10 +53,10 @@ export const createNewSalary = async (req, res, next) => {
         currentSalary: userSalary,
         totalHours: parseFloat(totalhours),
       };
-      // await newSalary.create(latestSalary);
-      latest.push(latestSalary);
+      await newSalary.create(latestSalary);
+      // latest.push(latestSalary);
     }
-    return res.send(latest);
+    // return res.send(latest);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal Server Error", status: false });

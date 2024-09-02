@@ -21,83 +21,101 @@ export const finalAmount = async (req, res, next) => {
       .padStart(2, "0")}-${currentYear}`;
     const users = await newSalary.find({ salaryMonth: salaryMonth });
     for (let user of users) {
-      let finalAmount = 0;
-      let advanceAmount = 0;
-      let emiAmount;
-      const currentMonthSalary = user.currentSalary;
-      const basicSalary = user.basicSalary;
-      let oneDaySalary = (basicSalary / lastDayOfmonths).toFixed(2);
-      const advanceSalaryfind = await AdvanceSalary.find({
-        fullname: user.employeeId,
-        createdAt: {
-          $gte: firstDayOfPreviousMonth,
-          $lte: lastDayOfPreviousMonth,
-        },
-      });
-      advanceSalaryfind.forEach((record) => {
-        advanceAmount += record.amount || 0;
-      });
-      const pfAndSiper = await Epfo.find();
-      pfAndSiper.forEach((record) => {
-        (pf = record.totalPfPer), (esic = record.siPer);
-      });
-      const pfAmount = (basicSalary * pf) / 100 || 0;
-      const esicAmount = (basicSalary * esic) / 100 || 0;
-      const loanEmi = await Grantloan.find({
-        employee_name: user.employeeId,
-        period: { $gt: 0 },
-      });
-      if (loanEmi.length > 0) {
-        loanEmi.forEach((record) => {
-          emiAmount = record.emi || 0;
+      if (user.currentSalary > 0) {
+        let finalAmount = 0;
+        let advanceAmount = 0;
+        let emiAmount;
+        const currentMonthSalary = user.currentSalary;
+        const basicSalary = user.basicSalary;
+        let oneDaySalary = (basicSalary / lastDayOfmonths).toFixed(2);
+        const advanceSalaryfind = await AdvanceSalary.find({
+          fullname: user.employeeId,
+          createdAt: {
+            $gte: firstDayOfPreviousMonth,
+            $lte: lastDayOfPreviousMonth,
+          },
         });
-      } else {
-        emiAmount = 0;
-      }
-      await Grantloan.updateMany(
-        {
+        advanceSalaryfind.forEach((record) => {
+          advanceAmount += record.amount || 0;
+        });
+        const pfAndSiper = await Epfo.find();
+        pfAndSiper.forEach((record) => {
+          (pf = record.totalPfPer), (esic = record.siPer);
+        });
+        const pfAmount = (basicSalary * pf) / 100 || 0;
+        const esicAmount = (basicSalary * esic) / 100 || 0;
+        const loanEmi = await Grantloan.find({
           employee_name: user.employeeId,
           period: { $gt: 0 },
-        },
-        {
-          $inc: { period: -1 },
+        });
+        if (loanEmi.length > 0) {
+          loanEmi.forEach((record) => {
+            emiAmount = record.emi || 0;
+          });
+        } else {
+          emiAmount = 0;
         }
-      );
-      const advancesalarylapse = parseFloat(
-        (
-          currentMonthSalary -
-          advanceAmount -
-          emiAmount -
-          pfAmount -
-          esicAmount
-        ).toFixed(2)
-      );
-      const holidays = await Holiday.find({
-        userId: user.userId,
-        Year: currentYear,
-        Month: currentMonth,
-      });
-      const holidaysAmount = parseFloat(
-        (holidays.length * oneDaySalary).toFixed(2)
-      );
-      finalAmount = parseFloat(
-        (advancesalarylapse + holidaysAmount).toFixed(2)
-      );
-      let latestSalary = {
-        userId: user.userId,
-        employeeId: user.employeeId,
-        salaryMonth: `${currentMonth
-          .toString()
-          .padStart(2, "0")}-${currentYear}`,
-        netSalary: finalAmount,
-        emi: emiAmount,
-        epfoAmount: pfAmount,
-        esicAmount: esicAmount,
-        AdvanceSalaryAmount: advanceAmount,
-        holidayAmount: holidaysAmount,
-        month: currentMonth,
-      };
-      await FinalSalary.create(latestSalary);
+        await Grantloan.updateMany(
+          {
+            employee_name: user.employeeId,
+            period: { $gt: 0 },
+          },
+          {
+            $inc: { period: -1 },
+          }
+        );
+        const advancesalarylapse = parseFloat(
+          (
+            currentMonthSalary -
+            advanceAmount -
+            emiAmount -
+            pfAmount -
+            esicAmount
+          ).toFixed(2)
+        );
+        const holidays = await Holiday.find({
+          userId: user.userId,
+          Year: currentYear,
+          Month: currentMonth,
+        });
+        const holidaysAmount = parseFloat(
+          (holidays.length * oneDaySalary).toFixed(2)
+        );
+        finalAmount = parseFloat(
+          (advancesalarylapse + holidaysAmount).toFixed(2)
+        );
+        let latestSalary = {
+          userId: user.userId,
+          employeeId: user.employeeId,
+          salaryMonth: `${currentMonth
+            .toString()
+            .padStart(2, "0")}-${currentYear}`,
+          netSalary: finalAmount,
+          emi: emiAmount,
+          epfoAmount: pfAmount,
+          esicAmount: esicAmount,
+          AdvanceSalaryAmount: advanceAmount,
+          holidayAmount: holidaysAmount,
+          month: currentMonth,
+        };
+        await FinalSalary.create(latestSalary);
+      } else {
+        let absentSalary = {
+          userId: user.userId,
+          employeeId: user.employeeId,
+          salaryMonth: `${currentMonth
+            .toString()
+            .padStart(2, "0")}-${currentYear}`,
+          netSalary: 0,
+          emi: 0,
+          epfoAmount: 0,
+          esicAmount: 0,
+          AdvanceSalaryAmount: 0,
+          holidayAmount: 0,
+          month: currentMonth,
+        };
+        await FinalSalary.create(absentSalary);
+      }
       // list.push(latestSalary);
     }
     // res.status(200).json(list);

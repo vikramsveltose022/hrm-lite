@@ -4,27 +4,26 @@ import axios from "axios";
 
 export const createNewSalary = async (req, res, next) => {
   try {
-    // let latest = [];
+    let latest = [];
     // let employee = [];
-    let totalhours = 0;
-    let totalWorkingDays = 0;
     const current = new Date();
     const month = current.getMonth();
     const year = current.getFullYear();
     const lastDayOfPreviousMonth = new Date(year, month, 0).getDate();
-    const users = await Employee.find({
-      // userId: req.params.userId,
-      // status: "Active",
-    });
+    const users = await Employee.find({});
     if (users.length === 0) {
       return res.status(404).json({ message: "User Not Found", status: false });
     }
     for (let user of users) {
-      // console.log("users", user);
+      let totalWorkingDays = 0;
+      let totalhours = 0;
+      let totalUserHours = 0;
       const data = await totalWorkingHours(user._id);
+      if (data) {
+        totalWorkingDays = data.totalDays;
+        totalhours = data.totalHours.toString();
+      }
       const totalshiftWorkingHours = user.Shift.totalHours;
-      totalWorkingDays = await data.totalDays;
-      totalhours = data.totalHours.toString();
       const CheckSalary = user.Salary;
       // console.log("basicsalary", CheckSalary);
       const onedaySalary = (CheckSalary / lastDayOfPreviousMonth).toFixed(2);
@@ -33,8 +32,10 @@ export const createNewSalary = async (req, res, next) => {
       // console.log("totalshiftWorkingHours", totalshiftWorkingHours);
       // console.log("oneHoursSalary", oneHoursSalary);
       let userSalary = 0;
-      const [hours, minutes, seconds] = totalhours.split(":").map(Number);
-      const totalUserHours = hours + minutes / 60 + seconds / 3600;
+      if (typeof totalhours == "string") {
+        const [hours, minutes, seconds] = totalhours.split(":").map(Number);
+        totalUserHours = hours + minutes / 60 + seconds / 3600;
+      }
       // console.log(totalUserHours);
       if (totalUserHours > 0) {
         // console.log("totalUserHours", totalUserHours);
@@ -52,10 +53,10 @@ export const createNewSalary = async (req, res, next) => {
         currentSalary: userSalary,
         totalHours: parseFloat(totalhours),
       };
-      await newSalary.create(latestSalary);
-      // latest.push(latestSalary);
+      // await newSalary.create(latestSalary);
+      latest.push(latestSalary);
     }
-    // return res.send(latest);
+    return res.send(latest);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal Server Error", status: false });

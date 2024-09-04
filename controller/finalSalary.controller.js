@@ -42,6 +42,7 @@ export const finalAmount = async (req, res, next) => {
         pfAndSiper.forEach((record) => {
           (pf = record.totalPfPer), (esic = record.siPer);
         });
+
         const pfAmount = (basicSalary * pf) / 100 || 0;
         const esicAmount = (basicSalary * esic) / 100 || 0;
         const loanEmi = await Grantloan.find({
@@ -153,9 +154,9 @@ export const viewAmountDetails = async (req, res, next) => {
     const employeeId = req.params.employeeId;
     const date = req.params.date;
     const salaryMonth = date.slice(3, 10);
-    const LoanEmployee = await Grantloan.findOne({
+    const LoanEmployee = await Grantloan.find({
       employee_name: employeeId,
-      date: date,
+      period: { $gt: 0 },
     });
     const employee = await FinalSalary.findOne({
       employeeId: employeeId,
@@ -165,7 +166,7 @@ export const viewAmountDetails = async (req, res, next) => {
       FinalSalary: employee,
       LoanAmount: LoanEmployee,
     };
-    res.json(list);
+    res.status(200).json({ list, status: true });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal Server Error", status: false });

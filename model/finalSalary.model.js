@@ -31,6 +31,9 @@ const finalSalarySchema = new mongoose.Schema(
     month: {
       type: String,
     },
+    totalSalary: {
+      type: Number,
+    },
   },
   { timestamps: true }
 );

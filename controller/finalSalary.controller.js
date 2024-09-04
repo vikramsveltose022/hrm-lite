@@ -97,6 +97,7 @@ export const finalAmount = async (req, res, next) => {
           AdvanceSalaryAmount: advanceAmount,
           holidayAmount: holidaysAmount,
           month: currentMonth,
+          totalSalary: currentMonthSalary,
         };
         // list.push(latestSalary);
         await FinalSalary.create(latestSalary);

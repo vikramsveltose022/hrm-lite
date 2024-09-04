@@ -18,12 +18,15 @@ export const createNewSalary = async (req, res, next) => {
       let totalWorkingDays = 0;
       let totalhours = 0;
       let totalUserHours = 0;
+      // console.log("user", user);
       const data = await totalWorkingHours(user._id);
       if (data) {
         totalWorkingDays = data.totalDays;
         totalhours = data.totalHours.toString();
       }
+      // console.log("totalWorkingDays", totalWorkingDays);
       const totalshiftWorkingHours = user.Shift.totalHours;
+      // console.log(user.Shift);
       const CheckSalary = user.Salary;
       // console.log("basicsalary", CheckSalary);
       const onedaySalary = (CheckSalary / lastDayOfPreviousMonth).toFixed(2);

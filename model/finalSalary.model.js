@@ -34,6 +34,10 @@ const finalSalarySchema = new mongoose.Schema(
     totalSalary: {
       type: Number,
     },
+    salaryStatus: {
+      type: String,
+      default: "UnPaid",
+    },
   },
   { timestamps: true }
 );

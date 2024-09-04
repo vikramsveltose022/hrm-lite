@@ -19,6 +19,13 @@ const grantloanschema = new mongoose.Schema(
     duration: {
       type: Number,
     },
+    date: {
+      type: String,
+    },
+    status: {
+      type: String,
+      default: "Pending",
+    },
   },
   { timestamps: true }
 );

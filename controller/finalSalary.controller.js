@@ -131,15 +131,42 @@ export const finalAmount = async (req, res, next) => {
 export const viewAmount = async (req, res, next) => {
   try {
     const employeeId = req.params.employeeId;
+    const salaryMonth = req.params.salaryMonth;
     const Payslip = await FinalSalary.find({
       employeeId: employeeId,
-      month: req.params.month,
+      salaryMonth: salaryMonth,
     })
       .sort({ sortorder: -1 })
       .populate({ path: "employeeId", model: "employee" });
     return Payslip.length > 0
       ? res.status(200).json({ message: "Data Found", Payslip, status: true })
       : res.status(404).json({ message: "Not Found", status: false });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error", status: false });
+  }
+};
+
+export const viewAmountDetails = async (req, res, next) => {
+  try {
+    let list = {};
+    const employeeId = req.params.employeeId;
+    const date = req.params.date;
+    const salaryMonth = date.slice(3, 10);
+    const LoanEmployee = await Grantloan.findOne({
+      employee_name: employeeId,
+      date: date,
+    });
+    const employee = await FinalSalary.findOne({
+      employeeId: employeeId,
+      salaryMonth: salaryMonth,
+    });
+    list = {
+      totalSalary: employee.netSalary,
+      advanceAmount: employee.AdvanceSalaryAmount,
+      LoanAmount: LoanEmployee.loan_amount,
+    };
+    res.json(list);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal Server Error", status: false });

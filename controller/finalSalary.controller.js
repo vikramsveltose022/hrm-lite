@@ -162,9 +162,8 @@ export const viewAmountDetails = async (req, res, next) => {
       salaryMonth: salaryMonth,
     });
     list = {
-      totalSalary: employee.netSalary,
-      advanceAmount: employee.AdvanceSalaryAmount,
-      LoanAmount: LoanEmployee.loan_amount,
+      FinalSalary: employee,
+      LoanAmount: LoanEmployee,
     };
     res.json(list);
   } catch (error) {

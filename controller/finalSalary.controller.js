@@ -7,7 +7,7 @@ import { newSalary } from "../model/newSalary.model.js";
 
 export const finalAmount = async (req, res, next) => {
   try {
-    // let list = [];
+    let list = [];
     let pf;
     let esic;
     const currentDate = new Date();
@@ -98,6 +98,7 @@ export const finalAmount = async (req, res, next) => {
           holidayAmount: holidaysAmount,
           month: currentMonth,
         };
+        // list.push(latestSalary);
         await FinalSalary.create(latestSalary);
       } else {
         let absentSalary = {
@@ -114,6 +115,7 @@ export const finalAmount = async (req, res, next) => {
           holidayAmount: 0,
           month: currentMonth,
         };
+        // list.push(absentSalary);
         await FinalSalary.create(absentSalary);
       }
       // list.push(latestSalary);

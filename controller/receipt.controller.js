@@ -154,11 +154,11 @@ export const SavePayment = async (req, res, next) => {
       req.body.voucherNo = 1;
     }
     req.body.voucherType = "payment";
-    const receiptData = { ...req.body, ...item };
-    const reciept = await Receipt.create(receiptData);
+    // const receiptData = { ...req.body, ...item };
+    const reciept = await Receipt.create(req.body);
     // partyReceipt.push(reciept);
     // }
-    reciept.length > 0
+    reciept
       ? res
           .status(200)
           .json({ message: "Payment Saved Successfully!", status: true })

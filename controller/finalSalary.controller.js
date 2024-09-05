@@ -153,22 +153,28 @@ export const viewAmountDetails = async (req, res, next) => {
     let list = {};
     const employeeId = req.params.employeeId;
     const date = req.params.date;
-    const salaryMonth = date.slice(3, 10);
-    let LoanEmployee = await Grantloan.find({
+    const MonthYear = date.slice(3, 10);
+    let LoanEmployee = await Grantloan.findOne({
       employee_name: employeeId,
-      period: { $gt: 0 },
+      date: MonthYear,
     });
-    if (LoanEmployee == null || LoanEmployee.length == 0) {
-      LoanEmployee = 0;
-    }
     const employee = await FinalSalary.findOne({
       employeeId: employeeId,
-      salaryMonth: salaryMonth,
+      salaryMonth: MonthYear,
+    });
+
+    const advanceAmount = await AdvanceSalary.findOne({
+      fullname: employeeId,
+      date: MonthYear,
     });
 
     list = {
-      FinalSalary: employee,
-      LoanAmount: LoanEmployee,
+      FinalSalary: employee.netSalary,
+      salaryStatus: employee.salaryStatus,
+      loan_amount: LoanEmployee.loan_amount,
+      loan_status: LoanEmployee.status,
+      advanceSalary: advanceAmount.amount,
+      advanceAmount_status: advanceAmount.status,
     };
     res.status(200).json({ list, status: true });
   } catch (error) {

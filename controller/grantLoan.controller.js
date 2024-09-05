@@ -2,10 +2,16 @@ import { Grantloan } from "../model/grantLoan.model.js";
 
 export const addLoan = async (req, res, next) => {
   try {
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth();
+    const currentYear = currentDate.getFullYear();
     const si =
       (req.body.loan_amount * req.body.period * req.body.interest_rate) / 1200;
     req.body.emi = ((req.body.loan_amount + si) / req.body.period).toFixed(2);
     req.body.duration = req.body.period;
+    req.body.date = `${currentMonth
+      .toString()
+      .padStart(2, "0")}-${currentYear}`;
     const loan = await Grantloan.create(req.body);
     return loan
       ? res.status(200).json({ message: "Data Added", loan, status: true })

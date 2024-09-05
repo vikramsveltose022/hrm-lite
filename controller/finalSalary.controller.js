@@ -158,6 +158,7 @@ export const viewAmountDetails = async (req, res, next) => {
       employee_name: employeeId,
       date: MonthYear,
     });
+    
     const employee = await FinalSalary.findOne({
       employeeId: employeeId,
       salaryMonth: MonthYear,

@@ -1,3 +1,5 @@
+import { AdvanceSalary } from "../model/advanceSalary.model.js";
+import { FinalSalary } from "../model/finalSalary.model.js";
 import { Receipt } from "../model/receipt.model.js";
 
 export const SaveReceipt = async (req, res, next) => {
@@ -154,9 +156,23 @@ export const SavePayment = async (req, res, next) => {
       req.body.voucherNo = 1;
     }
     req.body.voucherType = "payment";
-    // const receiptData = { ...req.body, ...item };
-    req.body.status = "Paid";
+    const formatedDate = req.body.date.slice(3, 10);
+    if (req.body.reason == "Salary") {
+      const Salary = await FinalSalary.findOne({
+        employeeId: req.body.employeeId,
+        salaryMonth: formatedDate,
+      });
+      if (Salary.status == "Paid") {
+        return res
+          .status(404)
+          .json({ message: "Your Salary Alerdy Paid", status: false });
+      } else {
+        Salary.status = "Paid";
+        Salary.save();
+      }
+    }
     const reciept = await Receipt.create(req.body);
+
     // partyReceipt.push(reciept);
     // }
     reciept

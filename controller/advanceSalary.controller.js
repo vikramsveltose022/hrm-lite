@@ -2,6 +2,12 @@ import { AdvanceSalary } from "../model/advanceSalary.model.js";
 
 export const addAdvance = async (req, res, next) => {
   try {
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth();
+    const currentYear = currentDate.getFullYear();
+    req.body.date = `${currentMonth
+      .toString()
+      .padStart(2, "0")}-${currentYear}`;
     const advanceSalary = await AdvanceSalary.create(req.body);
     return advanceSalary
       ? res
@@ -15,7 +21,6 @@ export const addAdvance = async (req, res, next) => {
     res.status(500).json({ error: "Internal Server Error", status: false });
   }
 };
-
 
 export const viewAdSalary = async (req, res, next) => {
   try {
@@ -32,7 +37,6 @@ export const viewAdSalary = async (req, res, next) => {
     res.status(500).json({ error: "Internal Server Error", status: false });
   }
 };
-
 
 export const viewByIdSalary = async (req, res, next) => {
   try {

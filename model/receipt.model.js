@@ -1,49 +1,55 @@
 import mongoose from "mongoose";
 
-const ReceiptSchema = new mongoose.Schema({
+const ReceiptSchema = new mongoose.Schema(
+  {
     userId: {
-        type: String
+      type: String,
     },
     employeeId: {
-        type: String,
+      type: String,
     },
     expenseId: {
-        type: String,
+      type: String,
     },
     type: {
-        type: String
+      type: String,
     },
     voucherType: {
-        type: String
+      type: String,
     },
     voucherNo: {
-        type: Number
+      type: Number,
     },
     date: {
-        type: Date
+      type: Date,
     },
     paymentMode: {
-        type: String
+      type: String,
     },
     amount: {
-        type: Number
+      type: Number,
     },
     instrumentNo: {
-        type: String
+      type: String,
     },
     remark: {
-        type: String
+      type: String,
     },
     latitude: {
-        type: String
+      type: String,
     },
     longitude: {
-        type: String
+      type: String,
+    },
+    reason: {
+      type: String,
     },
     status: {
-        type: String,
-        default: "Active"
-    }
-}, { timestamps: true })
+      type: String,
+      default: "Active",
+    },
+  },
+  { timestamps: true }
+);
 
 export const Receipt = mongoose.model("receipt", ReceiptSchema);

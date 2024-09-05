@@ -155,6 +155,7 @@ export const SavePayment = async (req, res, next) => {
     }
     req.body.voucherType = "payment";
     // const receiptData = { ...req.body, ...item };
+    req.body.status = "Paid";
     const reciept = await Receipt.create(req.body);
     // partyReceipt.push(reciept);
     // }

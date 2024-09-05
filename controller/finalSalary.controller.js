@@ -170,7 +170,7 @@ export const viewAmountDetails = async (req, res, next) => {
 
     list = {
       FinalSalary: employee.netSalary,
-      salaryStatus: employee.salaryStatus,
+      salaryStatus: employee.status,
       loan_amount: LoanEmployee.loan_amount,
       loan_status: LoanEmployee.status,
       advanceSalary: advanceAmount.amount,

@@ -154,14 +154,18 @@ export const viewAmountDetails = async (req, res, next) => {
     const employeeId = req.params.employeeId;
     const date = req.params.date;
     const salaryMonth = date.slice(3, 10);
-    const LoanEmployee = await Grantloan.find({
+    let LoanEmployee = await Grantloan.find({
       employee_name: employeeId,
       period: { $gt: 0 },
     });
+    if (LoanEmployee == null || LoanEmployee.length == 0) {
+      LoanEmployee = 0;
+    }
     const employee = await FinalSalary.findOne({
       employeeId: employeeId,
       salaryMonth: salaryMonth,
     });
+
     list = {
       FinalSalary: employee,
       LoanAmount: LoanEmployee,

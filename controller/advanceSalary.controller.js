@@ -3,11 +3,12 @@ import { AdvanceSalary } from "../model/advanceSalary.model.js";
 export const addAdvance = async (req, res, next) => {
   try {
     const currentDate = new Date();
-    const currentMonth = currentDate.getMonth();
+    const currentMonth = currentDate.getMonth() + 1;
     const currentYear = currentDate.getFullYear();
     req.body.date = `${currentMonth
       .toString()
       .padStart(2, "0")}-${currentYear}`;
+    console.log(req.body.date);
     const advanceSalary = await AdvanceSalary.create(req.body);
     return advanceSalary
       ? res

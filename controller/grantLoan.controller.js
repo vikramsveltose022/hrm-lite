@@ -3,7 +3,7 @@ import { Grantloan } from "../model/grantLoan.model.js";
 export const addLoan = async (req, res, next) => {
   try {
     const currentDate = new Date();
-    const currentMonth = currentDate.getMonth();
+    const currentMonth = currentDate.getMonth() + 1;
     const currentYear = currentDate.getFullYear();
     const si =
       (req.body.loan_amount * req.body.period * req.body.interest_rate) / 1200;

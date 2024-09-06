@@ -154,28 +154,39 @@ export const viewAmountDetails = async (req, res, next) => {
     const employeeId = req.params.employeeId;
     const date = req.params.date;
     const MonthYear = date.slice(3, 10);
+    let [month, year] = MonthYear.split("-").map(Number);
+    let currentDate = new Date(year, month - 1);
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    const newMonth = currentDate.getMonth() + 1;
+    const newYear = currentDate.getFullYear();
+    const formattedMonthYear = `${newMonth
+      .toString()
+      .padStart(2, "0")}-${newYear}`;
     let LoanEmployee = await Grantloan.findOne({
       employee_name: employeeId,
       date: MonthYear,
     });
+    const loanAmount = LoanEmployee == null ? 0 : LoanEmployee.loan_amount;
+    const loanStatus = LoanEmployee == null ? "" : LoanEmployee.status;
 
     const employee = await FinalSalary.findOne({
       employeeId: employeeId,
-      salaryMonth: MonthYear,
+      salaryMonth: formattedMonthYear,
     });
 
     const advanceAmount = await AdvanceSalary.findOne({
       fullname: employeeId,
       date: MonthYear,
     });
-
+    const advanceAmt = advanceAmount == null ? 0 : advanceAmount.amount;
+    const advancestatus = advanceAmount == null ? "" : advanceAmount.status;
     list = {
       FinalSalary: employee.netSalary,
       salaryStatus: employee.status,
-      loan_amount: LoanEmployee.loan_amount,
-      loan_status: LoanEmployee.status,
-      advanceSalary: advanceAmount.amount,
-      advanceAmount_status: advanceAmount.status,
+      loan_amount: loanAmount,
+      loan_status: loanStatus,
+      advanceSalary: advanceAmt,
+      advanceAmount_status: advancestatus,
     };
     res.status(200).json({ list, status: true });
   } catch (error) {

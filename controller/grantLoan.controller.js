@@ -64,13 +64,6 @@ export const updateLoan = async (req, res, next) => {
         1200;
       req.body.emi = ((req.body.loan_amount + si) / req.body.period).toFixed(2);
     }
-    const currentDate = new Date();
-    const currentMonth = currentDate.getMonth() + 1;
-    const currentYear = currentDate.getFullYear();
-    req.body.date = `${currentMonth
-      .toString()
-      .padStart(2, "0")}-${currentYear}`;
-
     const updatedData = req.body;
     await Grantloan.findByIdAndUpdate(id, updatedData, { new: true });
     res.status(200).json({ message: "Data Updated", status: true });

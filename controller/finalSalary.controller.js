@@ -154,35 +154,38 @@ export const viewAmountDetails = async (req, res, next) => {
     const employeeId = req.params.employeeId;
     const date = req.params.date;
     const MonthYear = date.slice(3, 10);
-    let [month, year] = MonthYear.split("-").map(Number);
-    let currentDate = new Date(year, month - 1);
-    currentDate.setMonth(currentDate.getMonth() - 1);
-    const newMonth = currentDate.getMonth() + 1;
-    const newYear = currentDate.getFullYear();
-    const formattedMonthYear = `${newMonth
-      .toString()
-      .padStart(2, "0")}-${newYear}`;
+    // let [month, year] = MonthYear.split("-").map(Number);
+    // let currentDate = new Date(year, month - 1);
+    // currentDate.setMonth(currentDate.getMonth() - 1);
+    // const newMonth = currentDate.getMonth() + 1;
+    // const newYear = currentDate.getFullYear();
+    // const formattedMonthYear = `${newMonth
+    //   .toString()
+    //   .padStart(2, "0")}-${newYear}`;
     let LoanEmployee = await Grantloan.findOne({
       employee_name: employeeId,
       date: MonthYear,
     });
-    const loanAmount = LoanEmployee == null ? 0 : LoanEmployee.loan_amount;
-    const loanStatus = LoanEmployee == null ? "" : LoanEmployee.status;
 
     const employee = await FinalSalary.findOne({
       employeeId: employeeId,
-      salaryMonth: formattedMonthYear,
+      salaryMonth: MonthYear,
     });
 
     const advanceAmount = await AdvanceSalary.findOne({
       fullname: employeeId,
       date: MonthYear,
     });
+
+    const loanAmount = LoanEmployee == null ? 0 : LoanEmployee.loan_amount;
+    const loanStatus = LoanEmployee == null ? "" : LoanEmployee.status;
     const advanceAmt = advanceAmount == null ? 0 : advanceAmount.amount;
     const advancestatus = advanceAmount == null ? "" : advanceAmount.status;
+    const finalSalary = employee == null ? 0 : employee.netSalary;
+    const salaryStatus = employee == null ? "" : employee.status;
     list = {
-      FinalSalary: employee.netSalary,
-      salaryStatus: employee.status,
+      FinalSalary: finalSalary,
+      salaryStatus: salaryStatus,
       loan_amount: loanAmount,
       loan_status: loanStatus,
       advanceSalary: advanceAmt,

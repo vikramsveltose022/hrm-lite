@@ -233,6 +233,7 @@ export const UpdatePayment = async (req, res, next) => {
       .json({ error: "Internal Server Error", status: false });
   }
 };
+
 export const DeletePayment = async (req, res, next) => {
   try {
     const receipt = await Receipt.findById({ _id: req.params.id });

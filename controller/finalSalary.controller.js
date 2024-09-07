@@ -166,8 +166,6 @@ export const viewAmountDetails = async (req, res, next) => {
       employee_name: employeeId,
       date: MonthYear,
     });
-    const loanAmount = LoanEmployee == null ? 0 : LoanEmployee.loan_amount;
-    const loanStatus = LoanEmployee == null ? "" : LoanEmployee.status;
 
     const employee = await FinalSalary.findOne({
       employeeId: employeeId,
@@ -178,6 +176,9 @@ export const viewAmountDetails = async (req, res, next) => {
       fullname: employeeId,
       date: MonthYear,
     });
+
+    const loanAmount = LoanEmployee == null ? 0 : LoanEmployee.loan_amount;
+    const loanStatus = LoanEmployee == null ? "" : LoanEmployee.status;
     const advanceAmt = advanceAmount == null ? 0 : advanceAmount.amount;
     const advancestatus = advanceAmount == null ? "" : advanceAmount.status;
     const finalSalary = employee == null ? 0 : employee.netSalary;

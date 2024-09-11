@@ -117,6 +117,7 @@ export const finalAmount = async (req, res, next) => {
           holidayAmount: 0,
           month: currentMonth,
         };
+
         // list.push(absentSalary);
         await FinalSalary.create(absentSalary);
       }
@@ -192,6 +193,21 @@ export const viewAmountDetails = async (req, res, next) => {
       advanceAmount_status: advancestatus,
     };
     res.status(200).json({ list, status: true });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error", status: false });
+  }
+};
+
+export const viewByEmployee = async (req, res, next) => {
+  try {
+    const id = req.params.employeeId;
+    const list = await FinalSalary.find({ employeeId: id }).sort({
+      sortorder: -1,
+    });
+    return list.length > 0
+      ? res.status(200).json({ message: "Data Found", list, status: true })
+      : res.status(404).json({ message: "Not Found", status: false });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal Server Error", status: false });

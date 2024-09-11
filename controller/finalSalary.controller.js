@@ -202,9 +202,11 @@ export const viewAmountDetails = async (req, res, next) => {
 export const viewByEmployee = async (req, res, next) => {
   try {
     const id = req.params.employeeId;
-    const list = await FinalSalary.find({ employeeId: id }).sort({
-      sortorder: -1,
-    });
+    const list = await FinalSalary.find({ employeeId: id })
+      .sort({
+        sortorder: -1,
+      })
+      .populate({ path: "employeeId", model: "employee" });
     return list.length > 0
       ? res.status(200).json({ message: "Data Found", list, status: true })
       : res.status(404).json({ message: "Not Found", status: false });

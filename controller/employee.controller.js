@@ -15,6 +15,7 @@ export const saveEmployeeDetails = async (req, res, next) => {
       });
     }
     req.body.uniqueKey = req.body.panNo;
+    console.log(uniqueKey);
     const employee = await Employee.create(req.body);
     return employee
       ? res

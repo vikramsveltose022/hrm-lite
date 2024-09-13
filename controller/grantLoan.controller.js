@@ -72,6 +72,11 @@ export const updateLoan = async (req, res, next) => {
         (Math.pow(1 + monthlyInterestRate, req.body.period) - 1)
       ).toFixed(2);
       req.body.emi = emi;
+    } else {
+      return res.status(404).json({
+        message: "All Fields are Required",
+        status: false,
+      });
     }
     const updatedData = req.body;
     await Grantloan.findByIdAndUpdate(id, updatedData, { new: true });

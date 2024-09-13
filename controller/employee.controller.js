@@ -15,6 +15,7 @@ export const saveEmployeeDetails = async (req, res, next) => {
       });
     }
     req.body.uniqueKey = req.body.panNo;
+    console.log(uniqueKey);
     const employee = await Employee.create(req.body);
     return employee
       ? res
@@ -104,6 +105,9 @@ export const updatedEmployeeDetail = async (req, res, next) => {
     const empoloyee = await Employee.findById(req.params.id);
     if (!empoloyee) {
       return res.status(404).json({ message: "Not Found", status: false });
+    }
+    if (req.body.PanNo) {
+      req.body.uniqueKey = req.body.panNo;
     }
     const updatedData = req.body;
     await Employee.findByIdAndUpdate(req.params.id, updatedData, { new: true });

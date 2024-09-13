@@ -10,6 +10,9 @@ const advanceSalarySchema = new mongoose.Schema(
     date: {
       type: String,
     },
+    issueDate: {
+      type: String,
+    },
     status: {
       type: String,
       default: "Pending",

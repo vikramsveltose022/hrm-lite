@@ -14,6 +14,7 @@ export const addLoan = async (req, res, next) => {
         Math.pow(1 + monthlyInterestRate, req.body.period)) /
       (Math.pow(1 + monthlyInterestRate, req.body.period) - 1)
     ).toFixed(2);
+
     req.body.emi = emi;
     req.body.date = `${currentMonth}-${currentYear}`;
 

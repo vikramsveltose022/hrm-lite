@@ -1,56 +1,61 @@
 import mongoose from "mongoose";
 
-const employeeSchema = new mongoose.Schema({
+const employeeSchema = new mongoose.Schema(
+  {
     userId: {
-        type: String
+      type: String,
     },
     Image: {
-        type: String
+      type: String,
     },
     Name: {
-        type: String
+      type: String,
     },
     dob: {
-        type: String
+      type: String,
     },
     Address: {
-        type: String
+      type: String,
     },
     Email: {
-        type: String
+      type: String,
     },
     Password: {
-        type: String
+      type: String,
     },
     Contact: {
-        type: String
+      type: String,
     },
     Designation: {
-        type: String
+      type: String,
     },
     AadharNo: {
-        type: String
+      type: String,
     },
     PanNo: {
-        type: String
+      type: String,
     },
     ReferalName: {
-        type: String
+      type: String,
     },
     ReferalContactNo: {
-        type: String
+      type: String,
     },
     Shift: {
-        type: Object
+      type: Object,
     },
     Salary: {
-        type: Number
+      type: Number,
+    },
+    uniqueKey: {
+      type: String,
     },
     status: {
-        type: String,
-        default: "Active"
-    }
-
-}, { timestamps: true });
+      type: String,
+      default: "Active",
+    },
+  },
+  { timestamps: true }
+);
 
 export const Employee = mongoose.model("employee", employeeSchema);

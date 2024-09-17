@@ -7,15 +7,15 @@ export const addLoan = async (req, res, next) => {
       .toString()
       .padStart(2, "0");
     const currentYear = currentDate.getFullYear();
-    const monthlyInterestRate = req.body.interest_rate / 12 / 100;
-    const emi = (
-      (req.body.loan_amount *
-        monthlyInterestRate *
-        Math.pow(1 + monthlyInterestRate, req.body.period)) /
-      (Math.pow(1 + monthlyInterestRate, req.body.period) - 1)
-    ).toFixed(2);
+    // const monthlyInterestRate = req.body.interest_rate / 12 / 100;
+    // const emi = (
+    //   (req.body.loan_amount *
+    //     monthlyInterestRate *
+    //     Math.pow(1 + monthlyInterestRate, req.body.period)) /
+    //   (Math.pow(1 + monthlyInterestRate, req.body.period) - 1)
+    // ).toFixed(2);
 
-    req.body.emi = emi;
+    // req.body.emi = emi;
     req.body.date = `${currentMonth}-${currentYear}`;
 
     const loan = await Grantloan.create(req.body);
@@ -64,21 +64,21 @@ export const updateLoan = async (req, res, next) => {
     if (!loan) {
       return res.status(404).json({ message: "Not Found", status: false });
     }
-    if (req.body.loan_amount && req.body.interest_rate && req.body.period) {
-      const monthlyInterestRate = req.body.interest_rate / 12 / 100;
-      const emi = (
-        (req.body.loan_amount *
-          monthlyInterestRate *
-          Math.pow(1 + monthlyInterestRate, req.body.period)) /
-        (Math.pow(1 + monthlyInterestRate, req.body.period) - 1)
-      ).toFixed(2);
-      req.body.emi = emi;
-    } else {
-      return res.status(404).json({
-        message: "All Fields are Required",
-        status: false,
-      });
-    }
+    // if (req.body.loan_amount && req.body.interest_rate && req.body.period) {
+    //   const monthlyInterestRate = req.body.interest_rate / 12 / 100;
+    //   const emi = (
+    //     (req.body.loan_amount *
+    //       monthlyInterestRate *
+    //       Math.pow(1 + monthlyInterestRate, req.body.period)) /
+    //     (Math.pow(1 + monthlyInterestRate, req.body.period) - 1)
+    //   ).toFixed(2);
+    //   req.body.emi = emi;
+    // } else {
+    //   return res.status(404).json({
+    //     message: "All Fields are Required",
+    //     status: false,
+    //   });
+    // }
     const updatedData = req.body;
     await Grantloan.findByIdAndUpdate(id, updatedData, { new: true });
     res.status(200).json({ message: "Data Updated", status: true });

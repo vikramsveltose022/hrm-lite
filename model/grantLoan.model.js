@@ -13,6 +13,9 @@ const grantloanschema = new mongoose.Schema(
     interest_rate: {
       type: Number,
     },
+    type: {
+      type: String,
+    },
     emi: {
       type: Number,
     },

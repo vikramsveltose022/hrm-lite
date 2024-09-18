@@ -17,7 +17,7 @@ export const addLoan = async (req, res, next) => {
 
     // req.body.emi = emi;
     req.body.date = `${currentMonth}-${currentYear}`;
-
+    req.body.period = req.body.duration;
     const loan = await Grantloan.create(req.body);
     return loan
       ? res.status(200).json({ message: "Data Added", loan, status: true })

@@ -4,7 +4,7 @@ import axios from "axios";
 
 export const createNewSalary = async (req, res, next) => {
   try {
-    // let latest = [];
+    let latest = [];
     // let employee = [];
     const current = new Date();
     const month = current.getMonth();
@@ -18,11 +18,13 @@ export const createNewSalary = async (req, res, next) => {
       let totalWorkingDays = 0;
       let totalhours = 0;
       let totalUserHours = 0;
+      let totalShiftWorkingHours = 0;
       // console.log("user", user);
       const data = await totalWorkingHours(user._id);
       if (data) {
         totalWorkingDays = data.totalDays;
         totalhours = data.totalHours.toString();
+        totalShiftWorkingHours = data.totalWorkingHours;
       }
       // console.log("totalWorkingDays", totalWorkingDays);
       const totalshiftWorkingHours = user.Shift.totalHours;
@@ -55,6 +57,8 @@ export const createNewSalary = async (req, res, next) => {
         salaryMonth: `${month.toString().padStart(2, "0")}-${year}`,
         currentSalary: userSalary,
         totalHours: parseFloat(totalhours),
+        presentDays: totalWorkingDays,
+        totalShiftWorkingHours: parseFloat(totalShiftWorkingHours),
       };
       await newSalary.create(latestSalary);
       // latest.push(latestSalary);

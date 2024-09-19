@@ -34,6 +34,21 @@ const finalSalarySchema = new mongoose.Schema(
     totalSalary: {
       type: Number,
     },
+    totalWorkingHours: {
+      type: Number,
+    },
+    totalWorkingDays: {
+      type: Number,
+    },
+    presentDays: {
+      type: Number,
+    },
+    letByTime: {
+      type: Number,
+    },
+    absentDays: {
+      type: Number,
+    },
     status: {
       type: String,
       default: "UnPaid",

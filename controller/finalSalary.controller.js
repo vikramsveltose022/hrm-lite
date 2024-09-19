@@ -25,6 +25,9 @@ export const finalAmount = async (req, res, next) => {
         let finalAmount = 0;
         let advanceAmount = 0;
         let emiAmount;
+        const totalWorkingUserHours = Number(user.totalHours);
+        const totalWorkingShiftHours = Number(user.totalShiftWorkingHours);
+        const letByTime = totalWorkingShiftHours - totalWorkingUserHours;
         const currentMonthSalary = user.currentSalary;
         const basicSalary = user.basicSalary;
         let oneDaySalary = (basicSalary / lastDayOfmonths).toFixed(2);
@@ -85,6 +88,9 @@ export const finalAmount = async (req, res, next) => {
         finalAmount = parseFloat(
           (advancesalarylapse + holidaysAmount).toFixed(2)
         );
+        const totalWorkingDays = lastDayOfmonths - holidays.length;
+        const presentDays = user.presentDays;
+        const absentDays = totalWorkingDays - presentDays;
         let latestSalary = {
           userId: user.userId,
           employeeId: user.employeeId,
@@ -99,6 +105,11 @@ export const finalAmount = async (req, res, next) => {
           holidayAmount: holidaysAmount,
           month: currentMonth,
           totalSalary: currentMonthSalary,
+          totalWorkingHours: totalWorkingShiftHours,
+          totalWorkingDays: totalWorkingDays,
+          presentDays: presentDays,
+          absentDays: absentDays,
+          letByTime: letByTime,
         };
         // list.push(latestSalary);
         await FinalSalary.create(latestSalary);
@@ -116,12 +127,14 @@ export const finalAmount = async (req, res, next) => {
           AdvanceSalaryAmount: 0,
           holidayAmount: 0,
           month: currentMonth,
+          totalWorkingDays: 0,
+          presentDays: 0,
+          absentDays: lastDayOfmonths,
+          letByTime: 0,
         };
-
         // list.push(absentSalary);
         await FinalSalary.create(absentSalary);
       }
-      // list.push(latestSalary);
     }
     // res.status(200).json(list);
   } catch (error) {

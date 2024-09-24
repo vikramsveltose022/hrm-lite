@@ -25,9 +25,10 @@ export const finalAmount = async (req, res, next) => {
         let finalAmount = 0;
         let advanceAmount = 0;
         let emiAmount;
-        const totalWorkingUserHours = Number(user.totalHours);
-        const totalWorkingShiftHours = Number(user.totalShiftWorkingHours);
-        const letByTime = totalWorkingShiftHours - totalWorkingUserHours;
+        const totalWorkingUserHours = user.totalHours;
+        const totalWorkingShiftHours = user.totalShiftWorkingHours;
+        const letByTime = user.letByTime;
+
         const currentMonthSalary = user.currentSalary;
         const basicSalary = user.basicSalary;
         let oneDaySalary = (basicSalary / lastDayOfmonths).toFixed(2);
@@ -91,6 +92,10 @@ export const finalAmount = async (req, res, next) => {
         const totalWorkingDays = lastDayOfmonths - holidays.length;
         const presentDays = user.presentDays;
         const absentDays = totalWorkingDays - presentDays;
+        const absentDaysSalary = (
+          absentDays *
+          (basicSalary / lastDayOfmonths)
+        ).toFixed(2);
         let latestSalary = {
           userId: user.userId,
           employeeId: user.employeeId,
@@ -106,10 +111,12 @@ export const finalAmount = async (req, res, next) => {
           month: currentMonth,
           totalSalary: currentMonthSalary,
           totalWorkingHours: totalWorkingShiftHours,
+          totalUserWorkingHours: totalWorkingUserHours,
           totalWorkingDays: totalWorkingDays,
           presentDays: presentDays,
           absentDays: absentDays,
           letByTime: letByTime,
+          absentDaysSalary: absentDaysSalary,
         };
         // list.push(latestSalary);
         await FinalSalary.create(latestSalary);
@@ -128,9 +135,12 @@ export const finalAmount = async (req, res, next) => {
           holidayAmount: 0,
           month: currentMonth,
           totalWorkingDays: 0,
+          totalWorkingHours: "0",
+          totalUserWorkingHours: "0",
           presentDays: 0,
           absentDays: lastDayOfmonths,
-          letByTime: 0,
+          letByTime: "0",
+          absentDaysSalary: 0,
         };
         // list.push(absentSalary);
         await FinalSalary.create(absentSalary);

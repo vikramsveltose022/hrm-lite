@@ -2,6 +2,26 @@ import { newSalary } from "../model/newSalary.model.js";
 import { Employee } from "../model/employee.model.js";
 import axios from "axios";
 
+function timeDifference(totalHours, totalWorkingHours) {
+  function convertToSeconds(timeStr) {
+    const [hours, minutes, seconds] = timeStr.split(":").map(Number);
+    return hours * 3600 + minutes * 60 + (seconds || 0);
+  }
+
+  function convertToHoursAndDecimalMinutes(seconds) {
+    const hours = Math.floor(seconds / 3600);
+    const remainingMinutes = (seconds % 3600) / 60;
+    const decimalMinutes = (remainingMinutes / 60).toFixed(2);
+    return hours + parseFloat(decimalMinutes);
+  }
+  const totalHoursSeconds = convertToSeconds(totalHours);
+  const totalWorkingHoursSeconds = convertToSeconds(totalWorkingHours);
+
+  const diffInSeconds = totalWorkingHoursSeconds - totalHoursSeconds;
+  const diffInHours = convertToHoursAndDecimalMinutes(diffInSeconds);
+
+  return diffInHours;
+}
 export const createNewSalary = async (req, res, next) => {
   try {
     let latest = [];
@@ -15,15 +35,16 @@ export const createNewSalary = async (req, res, next) => {
       return res.status(404).json({ message: "User Not Found", status: false });
     }
     for (let user of users) {
-      let totalWorkingDays = 0;
-      let totalhours = 0;
-      let totalUserHours = 0;
-      let totalShiftWorkingHours = 0;
+      let totalWorkingDays = " 0";
+      let totalhours = "0";
+      let totalUserHours = "0";
+      let totalShiftWorkingHours = "0";
+      let totalmonthsHours = "0";
       // console.log("user", user);
       const data = await totalWorkingHours(user._id);
       if (data) {
         totalWorkingDays = data.totalDays;
-        totalhours = data.totalHours.toString();
+        totalhours = data.totalHours;
         totalShiftWorkingHours = data.totalWorkingHours;
       }
       // console.log("totalWorkingDays", totalWorkingDays);
@@ -46,6 +67,24 @@ export const createNewSalary = async (req, res, next) => {
         // console.log("totalUserHours", totalUserHours);
         userSalary = parseFloat((oneHoursSalary * totalUserHours).toFixed(2));
       }
+      const letByTime = timeDifference(totalhours, totalShiftWorkingHours);
+
+      let monthsSalary = 0;
+      if (typeof totalShiftWorkingHours == "string") {
+        const [hours, minutes, seconds] = totalShiftWorkingHours
+          .split(":")
+          .map(Number);
+        totalmonthsHours = hours + minutes / 60 + seconds / 3600;
+      }
+      // console.log(totalUserHours);
+      if (totalmonthsHours > 0) {
+        // console.log("totalUserHours", totalUserHours);
+        monthsSalary = parseFloat(
+          (oneHoursSalary * totalmonthsHours).toFixed(2)
+        );
+      }
+      let letTimeSalary = (monthsSalary - userSalary).toFixed(2);
+
       // console.log("monthssalary", userSalary);
       // console.log(oneHoursSalary);
       let latestSalary = {
@@ -56,9 +95,12 @@ export const createNewSalary = async (req, res, next) => {
         basicSalary: user.Salary,
         salaryMonth: `${month.toString().padStart(2, "0")}-${year}`,
         currentSalary: userSalary,
-        totalHours: parseFloat(totalhours),
+        totalHours: totalhours,
         presentDays: totalWorkingDays,
-        totalShiftWorkingHours: parseFloat(totalShiftWorkingHours),
+        totalShiftWorkingHours: totalShiftWorkingHours,
+        letByTime: letByTime == null ? 0 : letByTime,
+        letTimeSalary: letTimeSalary == null ? 0 : letTimeSalary,
+        totalShiftOneDayTime: totalshiftWorkingHours,
       };
       await newSalary.create(latestSalary);
       // latest.push(latestSalary);

@@ -21,7 +21,7 @@ const newSalarySchema = new mongoose.Schema(
       type: String,
     },
     totalHours: {
-      type: Number,
+      type: String,
     },
     totalPresentDays: {
       type: Number,
@@ -33,6 +33,18 @@ const newSalarySchema = new mongoose.Schema(
       type: Number,
     },
     totalShiftWorkingHours: {
+      type: String,
+    },
+    letByTime: {
+      type: String,
+    },
+    letTimeSalary: {
+      type: Number,
+    },
+    totalTimeOneDay: {
+      type: Number,
+    },
+    totalShiftOneDayTime: {
       type: Number,
     },
     status: {

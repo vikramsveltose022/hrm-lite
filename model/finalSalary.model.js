@@ -35,7 +35,10 @@ const finalSalarySchema = new mongoose.Schema(
       type: Number,
     },
     totalWorkingHours: {
-      type: Number,
+      type: String,
+    },
+    totalUserWorkingHours: {
+      type: String,
     },
     totalWorkingDays: {
       type: Number,
@@ -44,6 +47,9 @@ const finalSalarySchema = new mongoose.Schema(
       type: Number,
     },
     letByTime: {
+      type: String,
+    },
+    absentDaysSalary: {
       type: Number,
     },
     absentDays: {

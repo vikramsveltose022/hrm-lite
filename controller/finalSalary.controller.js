@@ -116,6 +116,7 @@ export const finalAmount = async (req, res, next) => {
           presentDays: presentDays,
           absentDays: absentDays,
           letByTime: letByTime,
+          letTimeSalary: user.letTimeSalary,
           absentDaysSalary: absentDaysSalary,
         };
         // list.push(latestSalary);
@@ -140,6 +141,7 @@ export const finalAmount = async (req, res, next) => {
           presentDays: 0,
           absentDays: lastDayOfmonths,
           letByTime: "0",
+          letTimeSalary: user.letTimeSalary,
           absentDaysSalary: 0,
         };
         // list.push(absentSalary);

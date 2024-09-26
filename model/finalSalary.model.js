@@ -55,6 +55,9 @@ const finalSalarySchema = new mongoose.Schema(
     absentDays: {
       type: Number,
     },
+    letTimeSalary: {
+      type: Number,
+    },
     status: {
       type: String,
       default: "UnPaid",

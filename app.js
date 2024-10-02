@@ -54,10 +54,9 @@ app.get("/", (req, res) => {
 
 cron.schedule("0 1 1 * *", () => {
   createNewSalary();
-  finalAmount();
-});
-cron.schedule("2 1 1 * *", () => {
-  finalAmount();
+  setTimeout(() => {
+    finalAmount();
+  }, 2 * 60 * 1000);
 });
 
 app.listen(process.env.PORT, () => {

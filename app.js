@@ -56,6 +56,9 @@ cron.schedule("0 1 1 * *", () => {
   createNewSalary();
   finalAmount();
 });
+cron.schedule("2 1 1 * *", () => {
+  finalAmount();
+});
 
 app.listen(process.env.PORT, () => {
   console.log(`SERVER RUNNING ON ${process.env.PORT} PORT` || 5555);

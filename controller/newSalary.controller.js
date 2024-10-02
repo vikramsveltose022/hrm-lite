@@ -30,7 +30,7 @@ export const createNewSalary = async (req, res, next) => {
     const month = current.getMonth();
     const year = current.getFullYear();
     const lastDayOfPreviousMonth = new Date(year, month, 0).getDate();
-    const users = await Employee.find({});
+    const users = await Employee.find({ status: "Active" });
     if (users.length === 0) {
       return res.status(404).json({ message: "User Not Found", status: false });
     }

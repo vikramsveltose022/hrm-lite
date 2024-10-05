@@ -102,7 +102,7 @@ export const finalAmount = async (req, res, next) => {
           salaryMonth: `${currentMonth
             .toString()
             .padStart(2, "0")}-${currentYear}`,
-          netSalary: finalAmount,
+          netSalary: Math.round(finalAmount),
           emi: emiAmount,
           epfoAmount: pfAmount,
           esicAmount: esicAmount,

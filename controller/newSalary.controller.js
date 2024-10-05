@@ -94,7 +94,7 @@ export const createNewSalary = async (req, res, next) => {
         AadharNo: user.AadharNo,
         basicSalary: user.Salary,
         salaryMonth: `${month.toString().padStart(2, "0")}-${year}`,
-        currentSalary: Math.round(userSalary),
+        currentSalary: userSalary,
         totalHours: totalhours,
         presentDays: totalWorkingDays,
         totalShiftWorkingHours: totalShiftWorkingHours,

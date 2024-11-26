@@ -7,7 +7,6 @@ import {
   ViewHoliday,
   ViewHolidayById,
   ViewHolidayByUser,
-  getHolidaysAndSundays,
 } from "../controller/holiday.controller.js";
 
 const router = express.Router();

@@ -1,6 +1,4 @@
 import { Holiday } from "../model/holiday.model.js";
-import dotenv from "dotenv";
-import axios from "axios";
 export const SaveHoliday = async (req, res, next) => {
   try {
     const holiday = await Holiday.create(req.body);

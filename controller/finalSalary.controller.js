@@ -21,6 +21,7 @@ export const finalAmount = async (req, res, next) => {
     }
     const firstDayOfPreviousMonth = new Date(currentYear, currentMonth, 1);
     const lastDayOfPreviousMonth = new Date(currentYear, currentMonth + 1, 0);
+    const lastDayOfmonths = lastDayOfPreviousMonth.getDate();
     const salaryMonth = `${(currentMonth + 1)
       .toString()
       .padStart(2, "0")}-${currentYear}`;

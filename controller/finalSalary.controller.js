@@ -11,12 +11,17 @@ export const finalAmount = async (req, res, next) => {
     let pf;
     let esic;
     const currentDate = new Date();
-    const currentMonth = currentDate.getMonth();
-    const currentYear = currentDate.getFullYear();
-    const firstDayOfPreviousMonth = new Date(currentYear, currentMonth - 1, 1);
-    const lastDayOfPreviousMonth = new Date(currentYear, currentMonth, 1);
-    const lastDayOfmonths = new Date(currentYear, currentMonth, 0).getDate();
-    let salaryMonth = `${currentMonth
+    let currentMonth = currentDate.getMonth();
+    let currentYear = currentDate.getFullYear();
+    if (currentMonth === 0) {
+      currentMonth = 11;
+      currentYear -= 1;
+    } else {
+      currentMonth -= 1;
+    }
+    const firstDayOfPreviousMonth = new Date(currentYear, currentMonth, 1);
+    const lastDayOfPreviousMonth = new Date(currentYear, currentMonth + 1, 0);
+    const salaryMonth = `${(currentMonth + 1)
       .toString()
       .padStart(2, "0")}-${currentYear}`;
     const users = await newSalary.find({ salaryMonth: salaryMonth });
@@ -244,14 +249,20 @@ export const viewByEmployee = async (req, res, next) => {
 export const TillPaidSalary = async (req, res, next) => {
   try {
     const currentDate = new Date();
-    const currentMonth = currentDate.getMonth();
-    const currentYear = currentDate.getFullYear();
-    let salaryMonth = `${currentMonth
+    let currentYear = currentDate.getFullYear();
+    let currentMonth = currentDate.getMonth();
+    if (currentMonth === 0) {
+      currentMonth = 11;
+      currentYear -= 1;
+    } else {
+      currentMonth -= 1;
+    }
+    let salaryMonth = `${(currentMonth + 1)
       .toString()
       .padStart(2, "0")}-${currentYear}`;
     const employee = await FinalSalary.find({ salaryMonth: salaryMonth });
-    const CurrentMonthPaidSalary = employee.reduce((acc, item) => {
-      return (acc = acc += item.netSalary);
+    const CurrentMonthPaidSalary = employee.reduce((tot, item) => {
+      return (tot = tot += item.netSalary);
     }, 0);
     const totalEmployeeData = await FinalSalary.find();
     const TillPaidSalary = totalEmployeeData.reduce((tot, item) => {

@@ -3,10 +3,18 @@ import { Grantloan } from "../model/grantLoan.model.js";
 export const addLoan = async (req, res, next) => {
   try {
     const currentDate = new Date();
-    const currentMonth = (currentDate.getMonth() + 1)
+    let currentMonth = currentDate.getMonth();
+    let currentYear = currentDate.getFullYear();
+
+    if (currentMonth === 0) {
+      currentMonth = 11;
+      currentYear -= 1;
+    } else {
+      currentMonth -= 1;
+    }
+    req.body.date = `${(currentMonth + 1)
       .toString()
-      .padStart(2, "0");
-    const currentYear = currentDate.getFullYear();
+      .padStart(2, "0")}-${currentYear}`;
     // const monthlyInterestRate = req.body.interest_rate / 12 / 100;
     // const emi = (
     //   (req.body.loan_amount *
@@ -16,7 +24,6 @@ export const addLoan = async (req, res, next) => {
     // ).toFixed(2);
 
     // req.body.emi = emi;
-    req.body.date = `${currentMonth}-${currentYear}`;
     req.body.period = req.body.duration;
     const loan = await Grantloan.create(req.body);
     return loan

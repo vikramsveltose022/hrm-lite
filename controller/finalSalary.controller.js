@@ -105,7 +105,7 @@ export const finalAmount = async (req, res, next) => {
         let latestSalary = {
           userId: user.userId,
           employeeId: user.employeeId,
-          salaryMonth: `${currentMonth
+          salaryMonth: `${(currentMonth + 1)
             .toString()
             .padStart(2, "0")}-${currentYear}`,
           netSalary: Math.round(finalAmount),
@@ -131,7 +131,7 @@ export const finalAmount = async (req, res, next) => {
         let absentSalary = {
           userId: user.userId,
           employeeId: user.employeeId,
-          salaryMonth: `${currentMonth
+          salaryMonth: `${(currentMonth + 1)
             .toString()
             .padStart(2, "0")}-${currentYear}`,
           netSalary: 0,

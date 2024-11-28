@@ -105,7 +105,7 @@ export const createNewSalary = async (req, res, next) => {
         totalHours: totalhours,
         presentDays: totalWorkingDays,
         totalShiftWorkingHours: totalShiftWorkingHours,
-        letByTime: letByTime == null ? 0 : letByTime,
+        letByTime: letByTime || 0,
         letTimeSalary: letTimeSalary == null ? 0 : letTimeSalary,
         totalShiftOneDayTime: totalshiftWorkingHours,
       };

@@ -240,3 +240,26 @@ export const viewByEmployee = async (req, res, next) => {
     res.status(500).json({ error: "Internal Server Error", status: false });
   }
 };
+
+export const TillPaidSalary = async (req, res, next) => {
+  try {
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth();
+    const currentYear = currentDate.getFullYear();
+    let salaryMonth = `${currentMonth
+      .toString()
+      .padStart(2, "0")}-${currentYear}`;
+    const employee = await FinalSalary.find({ salaryMonth: salaryMonth });
+    const CurrentMonthPaidSalary = employee.reduce((acc, item) => {
+      return (acc = acc += item.netSalary);
+    }, 0);
+    const totalEmployeeData = await FinalSalary.find();
+    const TillPaidSalary = totalEmployeeData.reduce((tot, item) => {
+      return (tot = tot += item.netSalary);
+    }, 0);
+    res.status(200).json({ CurrentMonthPaidSalary, TillPaidSalary });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error", status: false });
+  }
+};

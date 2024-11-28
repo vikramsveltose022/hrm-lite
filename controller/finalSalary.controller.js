@@ -53,8 +53,8 @@ export const finalAmount = async (req, res, next) => {
           (pf = record.totalPfPer), (esic = record.siPer);
         });
 
-        const pfAmount = (basicSalary * pf) / 100 || 0;
-        const esicAmount = (basicSalary * esic) / 100 || 0;
+        // const pfAmount = (basicSalary * pf) / 100 || 0;
+        // const esicAmount = (basicSalary * esic) / 100 || 0;
         const loanEmi = await Grantloan.find({
           employee_name: user.employeeId,
           period: { $gt: 0 },
@@ -76,13 +76,7 @@ export const finalAmount = async (req, res, next) => {
           }
         );
         const advancesalarylapse = parseFloat(
-          (
-            currentMonthSalary -
-            advanceAmount -
-            emiAmount -
-            pfAmount -
-            esicAmount
-          ).toFixed(2)
+          (currentMonthSalary - advanceAmount - emiAmount).toFixed(2)
         );
         const holidays = await Holiday.find({
           userId: user.userId,
@@ -110,8 +104,8 @@ export const finalAmount = async (req, res, next) => {
             .padStart(2, "0")}-${currentYear}`,
           netSalary: Math.round(finalAmount),
           emi: emiAmount,
-          epfoAmount: pfAmount,
-          esicAmount: esicAmount,
+          // epfoAmount: pfAmount,
+          // esicAmount: esicAmount,
           AdvanceSalaryAmount: advanceAmount,
           holidayAmount: holidaysAmount,
           month: currentMonth,

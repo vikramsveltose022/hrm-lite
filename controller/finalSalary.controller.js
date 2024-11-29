@@ -217,7 +217,9 @@ export const viewAmountDetails = async (req, res, next) => {
       advanceSalary: advanceAmt,
       advanceAmount_status: advancestatus,
     };
-    res.status(200).json({ list, status: true });
+    return employee
+      ? res.status(200).json({ list, status: true })
+      : res.status(404).json({ message: "Not Found", status: false });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal Server Error", status: false });
@@ -251,7 +253,7 @@ export const TillPaidSalary = async (req, res, next) => {
       currentYear -= 1;
     } else {
       currentMonth -= 1;
-    } //company based on the universal informatic and live well services for the best comman
+    }
     let salaryMonth = `${(currentMonth + 1)
       .toString()
       .padStart(2, "0")}-${currentYear}`;

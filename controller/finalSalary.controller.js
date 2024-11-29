@@ -225,7 +225,6 @@ export const viewAmountDetails = async (req, res, next) => {
     res.status(500).json({ error: "Internal Server Error", status: false });
   }
 };
-
 export const viewByEmployee = async (req, res, next) => {
   try {
     const id = req.params.employeeId;
@@ -282,6 +281,19 @@ export const allAttendanceList = async (req, res, next) => {
           .status(200)
           .json({ message: "Data Found", attendanceList, status: true })
       : res.status(404).json({ message: "Not Found", status: false });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error", status: false });
+  }
+};
+
+export const salaryStatus = async (req, res, next) => {
+  try {
+    const { employeeId, salaryMonth } = req.params;
+    const employeeSlip = await FinalSalary.findOne({ employeeId, salaryMonth });
+    employeeSlip.status = "Paid";
+    employeeSlip.save();
+    res.status(200).json({ message: "Salary Paid", status: true });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal Server Error", status: false });

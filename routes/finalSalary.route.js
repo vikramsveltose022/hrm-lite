@@ -1,6 +1,7 @@
 import express from "express";
 import {
   TillPaidSalary,
+  allAttendanceList,
   finalAmount,
   viewAmount,
   viewAmountDetails,
@@ -13,4 +14,5 @@ router.get("/view-salary/:employeeId/:salaryMonth", viewAmount);
 router.get("/view-details/:employeeId/:date", viewAmountDetails);
 router.get("/view-salary-by-employee/:employeeId", viewByEmployee);
 router.get("/tillPaidSalary", TillPaidSalary);
+router.get("/allPaidSalaryList", allAttendanceList);
 export default router;

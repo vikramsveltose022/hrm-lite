@@ -269,3 +269,19 @@ export const TillPaidSalary = async (req, res, next) => {
     res.status(500).json({ error: "Internal Server Error", status: false });
   }
 };
+
+export const allAttendanceList = async (req, res, next) => {
+  try {
+    const attendanceList = await FinalSalary.find({})
+      .sort({ sortorder: -1 })
+      .populate({ path: "employeeId", model: "employee" });
+    return attendanceList
+      ? res
+          .status(200)
+          .json({ message: "Data Found", attendanceList, status: true })
+      : res.status(404).json({ message: "Not Found", status: false });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error", status: false });
+  }
+};

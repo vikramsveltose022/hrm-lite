@@ -291,6 +291,11 @@ export const salaryStatus = async (req, res, next) => {
   try {
     const { employeeId, salaryMonth } = req.params;
     const employeeSlip = await FinalSalary.findOne({ employeeId, salaryMonth });
+    if ((employeeSlip.status = "Paid")) {
+      return res
+        .status(404)
+        .json({ message: "Salary Already Paid", status: false });
+    }
     employeeSlip.status = "Paid";
     employeeSlip.save();
     res.status(200).json({ message: "Salary Paid", status: true });

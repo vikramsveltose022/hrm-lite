@@ -108,7 +108,7 @@ export const finalAmount = async (req, res, next) => {
           // esicAmount: esicAmount,
           AdvanceSalaryAmount: advanceAmount,
           holidayAmount: holidaysAmount,
-          month: currentMonth,
+          month: currentMonth + 1,
           totalSalary: currentMonthSalary,
           totalWorkingHours: totalWorkingShiftHours,
           totalUserWorkingHours: totalWorkingUserHours,

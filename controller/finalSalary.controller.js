@@ -251,7 +251,7 @@ export const TillPaidSalary = async (req, res, next) => {
       currentYear -= 1;
     } else {
       currentMonth -= 1;
-    }
+    } //company based on the universal informatic and live well services for the best comman
     let salaryMonth = `${(currentMonth + 1)
       .toString()
       .padStart(2, "0")}-${currentYear}`;

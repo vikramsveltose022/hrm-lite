@@ -81,7 +81,7 @@ export const finalAmount = async (req, res, next) => {
         const holidays = await Holiday.find({
           userId: user.userId,
           Year: currentYear,
-          Month: currentMonth,
+          Month: currentMonth + 1,
         });
         const holidaysAmount = parseFloat(
           (holidays.length * oneDaySalary).toFixed(2)
@@ -92,6 +92,7 @@ export const finalAmount = async (req, res, next) => {
         const totalWorkingDays = lastDayOfmonths - holidays.length;
         const presentDays = user.presentDays;
         const absentDays = totalWorkingDays - presentDays;
+
         const absentDaysSalary = (
           absentDays *
           (basicSalary / lastDayOfmonths)

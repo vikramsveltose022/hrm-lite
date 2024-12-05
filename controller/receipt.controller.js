@@ -187,6 +187,7 @@ export const SavePayment = async (req, res, next) => {
       .json({ error: "Internal Server Error", status: false });
   }
 };
+
 export const ViewPayment = async (req, res, next) => {
   try {
     const receipts = await Receipt.find({

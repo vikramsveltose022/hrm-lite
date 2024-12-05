@@ -9,10 +9,14 @@ function timeDifference(totalHours, totalWorkingHours) {
   }
 
   function convertToHoursAndDecimalMinutes(seconds) {
-    const hours = Math.floor(seconds / 3600);
-    const remainingMinutes = (seconds % 3600) / 60;
-    const decimalMinutes = (remainingMinutes / 60).toFixed(2);
-    return hours + parseFloat(decimalMinutes);
+    const hours = Math.floor(seconds / 3600)
+      .toString()
+      .padStart(2, "0");
+    const minutes = Math.floor((seconds % 3600) / 60)
+      .toString()
+      .padStart(2, "0");
+    const secs = (seconds % 60).toString().padStart(2, "0");
+    return `${hours}:${minutes}:${secs}`;
   }
   const totalHoursSeconds = convertToSeconds(totalHours);
   const totalWorkingHoursSeconds = convertToSeconds(totalWorkingHours);
@@ -75,7 +79,6 @@ export const createNewSalary = async (req, res, next) => {
         userSalary = parseFloat((oneHoursSalary * totalUserHours).toFixed(2));
       }
       const letByTime = timeDifference(totalhours, totalShiftWorkingHours);
-
       let monthsSalary = 0;
       if (typeof totalShiftWorkingHours == "string") {
         const [hours, minutes, seconds] = totalShiftWorkingHours

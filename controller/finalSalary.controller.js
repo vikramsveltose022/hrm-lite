@@ -37,7 +37,7 @@ export const finalAmount = async (req, res, next) => {
 
         const currentMonthSalary = user.currentSalary;
         const basicSalary = user.basicSalary;
-        let oneDaySalary = Math.round(basicSalary / lastDayOfmonths);
+        let oneDaySalary = (basicSalary / lastDayOfmonths).toFixed(2);
         const advanceSalaryfind = await AdvanceSalary.find({
           fullname: user.employeeId,
           createdAt: {
@@ -75,31 +75,35 @@ export const finalAmount = async (req, res, next) => {
             $inc: { period: -1 },
           }
         );
-        const advancesalarylapse = Math.round(
-          currentMonthSalary - advanceAmount - emiAmount
+        const advancesalarylapse = parseFloat(
+          (currentMonthSalary - advanceAmount - emiAmount).toFixed(2)
         );
         const holidays = await Holiday.find({
           userId: user.userId,
           Year: currentYear,
           Month: currentMonth + 1,
         });
-        const holidaysAmount = Math.round(holidays.length * oneDaySalary);
-
-        finalAmount = advancesalarylapse + holidaysAmount;
+        const holidaysAmount = parseFloat(
+          (holidays.length * oneDaySalary).toFixed(2)
+        );
+        finalAmount = parseFloat(
+          (advancesalarylapse + holidaysAmount).toFixed(2)
+        );
         const totalWorkingDays = lastDayOfmonths - holidays.length;
         const presentDays = user.presentDays;
         const absentDays = totalWorkingDays - presentDays;
 
-        const absentDaysSalary = Math.round(
-          absentDays * (basicSalary / lastDayOfmonths)
-        );
+        const absentDaysSalary = (
+          absentDays *
+          (basicSalary / lastDayOfmonths)
+        ).toFixed(2);
         let latestSalary = {
           userId: user.userId,
           employeeId: user.employeeId,
           salaryMonth: `${(currentMonth + 1)
             .toString()
             .padStart(2, "0")}-${currentYear}`,
-          netSalary: finalAmount,
+          netSalary: Math.round(finalAmount),
           emi: emiAmount,
           // epfoAmount: pfAmount,
           // esicAmount: esicAmount,

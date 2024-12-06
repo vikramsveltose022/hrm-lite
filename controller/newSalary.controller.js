@@ -89,11 +89,9 @@ export const createNewSalary = async (req, res, next) => {
       // console.log(totalUserHours);
       if (totalmonthsHours > 0) {
         // console.log("totalUserHours", totalUserHours);
-        monthsSalary = parseFloat(
-          (oneHoursSalary * totalmonthsHours).toFixed(2)
-        );
+        monthsSalary = Math.round(oneHoursSalary * totalmonthsHours);
       }
-      let letTimeSalary = (monthsSalary - userSalary).toFixed(2);
+      let letTimeSalary = monthsSalary - userSalary;
 
       // console.log("monthssalary", userSalary);
       // console.log(oneHoursSalary);

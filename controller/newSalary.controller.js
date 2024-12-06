@@ -63,9 +63,9 @@ export const createNewSalary = async (req, res, next) => {
       // console.log(user.Shift);
       const CheckSalary = user.Salary;
       // console.log("basicsalary", CheckSalary);
-      const onedaySalary = (CheckSalary / lastDayOfPreviousMonth).toFixed(2);
+      const onedaySalary = Math.round(CheckSalary / lastDayOfPreviousMonth);
       // console.log("onedaySalary", onedaySalary);
-      const oneHoursSalary = (onedaySalary / totalshiftWorkingHours).toFixed(2);
+      const oneHoursSalary = Math.round(onedaySalary / totalshiftWorkingHours);
       // console.log("totalshiftWorkingHours", totalshiftWorkingHours);
       // console.log("oneHoursSalary", oneHoursSalary);
       let userSalary = 0;
@@ -76,7 +76,7 @@ export const createNewSalary = async (req, res, next) => {
       // console.log(totalUserHours);
       if (totalUserHours > 0) {
         // console.log("totalUserHours", totalUserHours);
-        userSalary = parseFloat((oneHoursSalary * totalUserHours).toFixed(2));
+        userSalary = Math.round(oneHoursSalary * totalUserHours);
       }
       const letByTime = timeDifference(totalhours, totalShiftWorkingHours);
       let monthsSalary = 0;
@@ -89,11 +89,9 @@ export const createNewSalary = async (req, res, next) => {
       // console.log(totalUserHours);
       if (totalmonthsHours > 0) {
         // console.log("totalUserHours", totalUserHours);
-        monthsSalary = parseFloat(
-          (oneHoursSalary * totalmonthsHours).toFixed(2)
-        );
+        monthsSalary = Math.round(oneHoursSalary * totalmonthsHours);
       }
-      let letTimeSalary = (monthsSalary - userSalary).toFixed(2);
+      let letTimeSalary = monthsSalary - userSalary;
 
       // console.log("monthssalary", userSalary);
       // console.log(oneHoursSalary);

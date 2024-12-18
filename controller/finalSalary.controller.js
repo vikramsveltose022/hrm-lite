@@ -83,27 +83,22 @@ export const finalAmount = async (req, res, next) => {
           Year: currentYear,
           Month: currentMonth + 1,
         });
-        const holidaysAmount = parseFloat(
-          (holidays.length * oneDaySalary).toFixed(2)
-        );
-        finalAmount = parseFloat(
-          (advancesalarylapse + holidaysAmount).toFixed(2)
-        );
+        const holidaysAmount = Math.round(holidays.length * oneDaySalary);
+        finalAmount = advancesalarylapse + holidaysAmount;
         const totalWorkingDays = lastDayOfmonths - holidays.length;
         const presentDays = user.presentDays;
         const absentDays = totalWorkingDays - presentDays;
 
-        const absentDaysSalary = (
-          absentDays *
-          (basicSalary / lastDayOfmonths)
-        ).toFixed(2);
+        const absentDaysSalary = Math.round(
+          absentDays * (basicSalary / lastDayOfmonths)
+        );
         let latestSalary = {
           userId: user.userId,
           employeeId: user.employeeId,
           salaryMonth: `${(currentMonth + 1)
             .toString()
             .padStart(2, "0")}-${currentYear}`,
-          netSalary: Math.round(finalAmount),
+          netSalary: finalAmount,
           emi: emiAmount,
           // epfoAmount: pfAmount,
           // esicAmount: esicAmount,
@@ -120,8 +115,8 @@ export const finalAmount = async (req, res, next) => {
           letTimeSalary: user.letTimeSalary,
           absentDaysSalary: absentDaysSalary,
         };
-        // list.push(latestSalary);
-        await FinalSalary.create(latestSalary);
+        list.push(latestSalary);
+        // await FinalSalary.create(latestSalary);
       } else {
         let absentSalary = {
           userId: user.userId,
@@ -145,11 +140,11 @@ export const finalAmount = async (req, res, next) => {
           letTimeSalary: user.letTimeSalary,
           absentDaysSalary: 0,
         };
-        // list.push(absentSalary);
-        await FinalSalary.create(absentSalary);
+        list.push(absentSalary);
+        // await FinalSalary.create(absentSalary);
       }
     }
-    // res.status(200).json(list);
+    res.status(200).json(list);
   } catch (error) {
     console.log(error);
     res.status(200).json({ error: "Internal Server Error", status: false });

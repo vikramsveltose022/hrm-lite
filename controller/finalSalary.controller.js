@@ -83,30 +83,25 @@ export const finalAmount = async (req, res, next) => {
           Year: currentYear,
           Month: currentMonth + 1,
         });
-        const holidaysAmount = parseFloat(
-          (holidays.length * oneDaySalary).toFixed(2)
-        );
-        finalAmount = parseFloat(
-          (advancesalarylapse + holidaysAmount).toFixed(2)
-        );
+        const holidaysAmount = Math.round(holidays.length * oneDaySalary);
+        finalAmount = advancesalarylapse + holidaysAmount;
         const totalWorkingDays = lastDayOfmonths - holidays.length;
         const presentDays = user.presentDays;
         const absentDays = totalWorkingDays - presentDays;
 
-        const absentDaysSalary = (
-          absentDays *
-          (basicSalary / lastDayOfmonths)
-        ).toFixed(2);
+        const absentDaysSalary = Math.round(
+          absentDays * (basicSalary / lastDayOfmonths)
+        );
         let latestSalary = {
           userId: user.userId,
           employeeId: user.employeeId,
           salaryMonth: `${(currentMonth + 1)
             .toString()
             .padStart(2, "0")}-${currentYear}`,
-          netSalary: Math.round(finalAmount),
+          netSalary: finalAmount,
           emi: emiAmount,
-          // epfoAmount: pfAmount,
-          // esicAmount: esicAmount,
+          epfoAmount: 0,
+          esicAmount: 0,
           AdvanceSalaryAmount: advanceAmount,
           holidayAmount: holidaysAmount,
           month: currentMonth + 1,

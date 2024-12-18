@@ -115,8 +115,8 @@ export const finalAmount = async (req, res, next) => {
           letTimeSalary: user.letTimeSalary,
           absentDaysSalary: absentDaysSalary,
         };
-        list.push(latestSalary);
-        // await FinalSalary.create(latestSalary);
+        // list.push(latestSalary);
+        await FinalSalary.create(latestSalary);
       } else {
         let absentSalary = {
           userId: user.userId,
@@ -140,11 +140,11 @@ export const finalAmount = async (req, res, next) => {
           letTimeSalary: user.letTimeSalary,
           absentDaysSalary: 0,
         };
-        list.push(absentSalary);
-        // await FinalSalary.create(absentSalary);
+        // list.push(absentSalary);
+        await FinalSalary.create(absentSalary);
       }
     }
-    res.status(200).json(list);
+    // res.status(200).json(list);
   } catch (error) {
     console.log(error);
     res.status(200).json({ error: "Internal Server Error", status: false });

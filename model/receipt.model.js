@@ -44,6 +44,7 @@ const ReceiptSchema = new mongoose.Schema(
     reason: {
       type: String,
     },
+    paymentDate: { type: String },
     status: {
       type: String,
       default: "Active",

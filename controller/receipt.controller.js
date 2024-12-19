@@ -157,7 +157,6 @@ export const SavePayment = async (req, res, next) => {
     }
     req.body.voucherType = "payment";
     const formatedDate = req.body.date.slice(3, 10);
-    console.log(formatedDate);
     if (req.body.reason == "Salary") {
       const Salary = await FinalSalary.findOne({
         employeeId: req.body.employeeId,

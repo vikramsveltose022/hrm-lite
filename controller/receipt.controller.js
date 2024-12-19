@@ -157,16 +157,19 @@ export const SavePayment = async (req, res, next) => {
     }
     req.body.voucherType = "payment";
     const formatedDate = req.body.date.slice(3, 10);
+    console.log(formatedDate);
     if (req.body.reason == "Salary") {
       const Salary = await FinalSalary.findOne({
         employeeId: req.body.employeeId,
         salaryMonth: formatedDate,
       });
+      console.log(Salary);
       if (Salary.status == "Paid") {
         return res
           .status(404)
           .json({ message: "Your Salary Alerdy Paid", status: false });
       } else {
+        console.log("true");
         Salary.status = "Paid";
         Salary.save();
       }

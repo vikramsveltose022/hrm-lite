@@ -130,7 +130,7 @@ export const finalAmount = async (req, res, next) => {
           esicAmount: 0,
           AdvanceSalaryAmount: 0,
           holidayAmount: 0,
-          month: currentMonth,
+          month: currentMonth + 1,
           totalWorkingDays: 0,
           totalWorkingHours: "0",
           totalUserWorkingHours: "0",
